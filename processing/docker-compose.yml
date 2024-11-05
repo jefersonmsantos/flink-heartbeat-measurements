@@ -1,0 +1,29 @@
+version: "2.2"
+services:
+  jobmanager:
+    image: us-central1-docker.pkg.dev/edc-igti-325912/docker-registry/pyflink:latest
+    ports:
+      - "8081:8081"
+    command: jobmanager
+    volumes:
+      - ./gcp_auth:/data
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+      - GOOGLE_APPLICATION_CREDENTIALS=/data/bqsa.json
+
+  taskmanager:
+    image: us-central1-docker.pkg.dev/edc-igti-325912/docker-registry/pyflink:latest
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    volumes:
+      - ./gcp_auth:/data
+    scale: 1
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 2    
+      - GOOGLE_APPLICATION_CREDENTIALS=/data/bqsa.json

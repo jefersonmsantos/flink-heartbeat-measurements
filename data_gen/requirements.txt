@@ -1,0 +1,6 @@
+faker==30.3.0
+kafka-python-ng==2.2.3
+confluent-kafka==2.5.3
+google-auth==2.35.0
+urllib3==2.2.3
+packaging==24.1
